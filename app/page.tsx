@@ -1,65 +1,182 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Navigation } from "@/components/navigation";
+import {
+  trackLandingPageView,
+  trackCTAClicked,
+  trackPricingLinkClicked,
+} from "@/lib/tracking";
+import { Check, ArrowRight } from "lucide-react";
 
 export default function Home() {
+  useEffect(() => {
+    trackLandingPageView();
+  }, []);
+
+  const handleCTAClick = (location: string) => {
+    trackCTAClicked(location);
+  };
+
+  const handlePricingClick = () => {
+    trackPricingLinkClicked();
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex min-h-screen flex-col">
+      <Navigation />
+
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="container mx-auto px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+              Build, Track, and Scale Your SaaS
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+              Experience how powerful analytics can transform your user journey.
+              Track conversions, optimize funnels, and measure what matters.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link href="/signup">
+                <Button
+                  size="lg"
+                  onClick={() => handleCTAClick("hero_primary")}
+                >
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/pricing">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => {
+                    handlePricingClick();
+                    handleCTAClick("hero_secondary");
+                  }}
+                >
+                  View Pricing
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="bg-muted/50 py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Everything you need to succeed
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Powerful features to track and optimize your user journey
+              </p>
+            </div>
+
+            <div className="mx-auto mt-16 max-w-5xl">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  {
+                    title: "Funnel Tracking",
+                    description:
+                      "Track user conversions at every step of your funnel",
+                  },
+                  {
+                    title: "Event Analytics",
+                    description:
+                      "Capture and analyze user interactions in real-time",
+                  },
+                  {
+                    title: "Conversion Optimization",
+                    description:
+                      "Identify bottlenecks and optimize conversion rates",
+                  },
+                  {
+                    title: "Marketing Attribution",
+                    description:
+                      "Track which channels drive the most signups",
+                  },
+                  {
+                    title: "User Segmentation",
+                    description:
+                      "Segment users based on behavior and properties",
+                  },
+                  {
+                    title: "Real-time Insights",
+                    description:
+                      "Get instant insights into user behavior and trends",
+                  },
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    className="rounded-lg border bg-card p-6 shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                        <Check className="h-5 w-5 text-primary" />
+                      </div>
+                      <h3 className="text-lg font-semibold">{feature.title}</h3>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      {feature.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Ready to get started?
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Join thousands of companies using analytics to grow their
+                business
+              </p>
+              <div className="mt-10 flex items-center justify-center gap-x-6">
+                <Link href="/signup">
+                  <Button
+                    size="lg"
+                    onClick={() => handleCTAClick("footer_primary")}
+                  >
+                    Start Free Trial
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link href="/pricing">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => {
+                      handlePricingClick();
+                      handleCTAClick("footer_secondary");
+                    }}
+                  >
+                    View Pricing
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-muted-foreground">
+            Demo SaaS Analytics Platform • Powered by PostHog
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
